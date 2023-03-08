@@ -47,20 +47,6 @@ public class MangaDexParser {
         return chapters;
     }
 
-    public static ArrayList<MangaChapterObject> FilterChapters(ArrayList<MangaChapterObject> chapters, String target_language){
-        ArrayList<MangaChapterObject> chapters_filtered = new ArrayList<MangaChapterObject>();
-
-        for(MangaChapterObject chapter: chapters){
-            if(chapter.translatedLanguage.equals(target_language)){
-                chapters_filtered.add(chapter);
-
-            }
-        }
-
-        return chapters_filtered;
-    }
-
-
     private static MangaObject JsonToManga(JsonObject manga_data) {
         JsonObject attributes = manga_data.get("attributes").getAsJsonObject();
         JsonArray relationships = manga_data.get("relationships").getAsJsonArray();
@@ -111,6 +97,25 @@ public class MangaDexParser {
         return new MangaChapterObject(id, chapter_number, translatedLanguage, pages);
     }
 
+    public static ChapterData JsonToChapterData(JsonObject chapter_data){
+
+        JsonObject chapter = chapter_data.get("chapter").getAsJsonObject();
+
+        String baseUrl = chapter_data.get("baseUrl").getAsString();
+        String hash = chapter.get("hash").getAsString();
+        JsonArray images = chapter.get("data").getAsJsonArray();
+        ArrayList<String> img_links = new ArrayList<>();
+        for(JsonElement img_link: images) {
+            img_links.add(img_link.getAsString());
+
+        }
+
+        return new ChapterData( baseUrl,  hash,  img_links);
+
+
+
+    }
+
 
     public static void PrintSearchResults(ArrayList<MangaObject> results) {
         for (MangaObject res : results) {
@@ -123,6 +128,7 @@ public class MangaDexParser {
             System.out.println(res.toString());
         }
     }
+
 
 }
 
@@ -173,3 +179,6 @@ class MangaChapterObject {
                 '}';
     }
 }
+
+
+
