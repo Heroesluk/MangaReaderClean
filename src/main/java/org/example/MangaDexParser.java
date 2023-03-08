@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 public class MangaDexParser {
 
-
-
     public ArrayList<MangaObject> ParseSearchResults(JsonObject data) {
         ArrayList<MangaObject> temp = new ArrayList<MangaObject>();
 
@@ -22,7 +20,6 @@ public class MangaDexParser {
         return temp;
     }
 
-
     private MangaObject JsonToManga(JsonObject manga_data) {
         JsonObject attributes = manga_data.get("attributes").getAsJsonObject();
         JsonArray relationships = manga_data.get("relationships").getAsJsonArray();
@@ -31,8 +28,13 @@ public class MangaDexParser {
         String id = manga_data.get("id").toString();
         String title = attributes.get("title").toString();
 
+        if(cover_file_name.length()==0){
+            throw new IllegalArgumentException("Cover file not found");
+        }
+
 
         return new MangaObject(id,title,cover_file_name);
+
 
     }
 
