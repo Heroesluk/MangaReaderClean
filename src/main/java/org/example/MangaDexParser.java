@@ -12,18 +12,17 @@ public class MangaDexParser {
         ArrayList<MangaObject> temp = new ArrayList<MangaObject>();
 
         JsonArray collection = data.get("data").getAsJsonArray();
-        if(collection.size()==0){
+        if (collection.size() == 0) {
             System.out.println("No manga found");
             return new ArrayList<MangaObject>();
 
         }
 
         for (int i = 0; i < collection.size(); i++) {
-            try{
+            try {
                 temp.add(JsonToManga(collection.get(i).getAsJsonObject()));
 
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("Huj");
 
                 System.out.println(collection.get(i));
@@ -34,16 +33,33 @@ public class MangaDexParser {
         return temp;
     }
 
+
+    public static ArrayList<MangaChapterObject> GetMangaChapters(JsonObject data) {
+        ArrayList<MangaChapterObject> chapters = new ArrayList<MangaChapterObject>();
+
+        JsonArray collection = data.get("data").getAsJsonArray();
+        if (collection.size() == 0) {
+            System.out.println("No chapters found");
+            return new ArrayList<MangaChapterObject>();
+        }
+
+        for (int i = 0; i < collection.size(); i++) {
+            chapters.add(JsonToChapter(collection.get(i).getAsJsonObject()));
+        }
+        return chapters;
+    }
+
+
     private static MangaObject JsonToManga(JsonObject manga_data) {
         JsonObject attributes = manga_data.get("attributes").getAsJsonObject();
         JsonArray relationships = manga_data.get("relationships").getAsJsonArray();
 
         String id = manga_data.get("id").getAsString();
 
-        String cover_file_name="";
+        String cover_file_name = "";
 
-        for(JsonElement relation: relationships){
-            if(relation.getAsJsonObject().get("type").getAsString().equals("cover_art")){
+        for (JsonElement relation : relationships) {
+            if (relation.getAsJsonObject().get("type").getAsString().equals("cover_art")) {
                 cover_file_name =
                         relation.getAsJsonObject().get("attributes").getAsJsonObject()
                                 .get("fileName").getAsString();
@@ -62,18 +78,31 @@ public class MangaDexParser {
             title = title_obj.get("ja").getAsString();
         }
 
-        if(cover_file_name.length()==0){
+        if (cover_file_name.length() == 0) {
             throw new IllegalArgumentException("Cover file not found");
         }
 
 
-        return new MangaObject(id,title,cover_file_name);
+        return new MangaObject(id, title, cover_file_name);
 
 
     }
 
-    public static void PrintSearchResults(ArrayList<MangaObject> results){
-        for(MangaObject res: results){
+    private static MangaChapterObject JsonToChapter(JsonObject chapter) {
+        JsonObject attributes = chapter.get("attributes").getAsJsonObject();
+
+        String id = chapter.get("id").getAsString();
+        float chapter_number = attributes.get("chapter").getAsFloat();
+        String translatedLanguage = attributes.get("translatedLanguage").getAsString();
+        int pages = attributes.get("pages").getAsInt();
+
+
+        return new MangaChapterObject(id, chapter_number, translatedLanguage, pages);
+    }
+
+
+    public static void PrintSearchResults(ArrayList<MangaObject> results) {
+        for (MangaObject res : results) {
             System.out.println(res.toString());
         }
 
@@ -87,7 +116,7 @@ class MangaObject {
     final String title;
     final String cover_file_name;
 
-    MangaObject(String id, String title, String cover_file_name){
+    MangaObject(String id, String title, String cover_file_name) {
         this.id = id;
         this.title = title;
         this.cover_file_name = cover_file_name;
@@ -102,4 +131,20 @@ class MangaObject {
                 ", cover_file_name='" + cover_file_name + '\'' +
                 '}';
     }
+}
+
+class MangaChapterObject {
+    final String id;
+    final float chapter_number;
+    final String translatedLanguage;
+    final int pages;
+
+    MangaChapterObject(String id, float chapter_number, String translatedLanguage, int pages) {
+        this.id = id;
+        this.chapter_number = chapter_number;
+        this.pages = pages;
+        this.translatedLanguage = translatedLanguage;
+
+    }
+
 }
