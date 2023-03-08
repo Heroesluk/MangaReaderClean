@@ -15,12 +15,10 @@ public class Main {
 
 
         UserLogic usrLogic = new UserLogic();
-        usrLogic.searchForManga("Kaoru hana wa rin to");
-        usrLogic.fetch_chapters("418791c0-35cf-4f87-936b-acd9cddf0989");
+        //usrLogic.searchForManga("Kaoru hana wa rin to");
+        usrLogic.fetch_chapters("418791c0-3dasdsada5cf-4f87-936b-acd9cddf0989");
         usrLogic.print_out("M");
         usrLogic.print_out("C");
-
-
 
 
     }
@@ -43,11 +41,12 @@ class Handler_HTTP{
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             String responseBody = response.body();
-            int responseStatusCode = response.statusCode();
+            if(response.statusCode()!=200){
+                return null;
+            };
 
             System.out.println("httpGetRequest: " + request_link);
             System.out.println("httpGetRequest: " + responseBody);
-            System.out.println("httpGetRequest status code: " + responseStatusCode);
 
 
             return JsonParser.parseString(responseBody).getAsJsonObject();
@@ -75,7 +74,6 @@ class Handler_HTTP{
         JsonObject response = Handler_HTTP.httpGetRequest("https://api.mangadex.org/manga/" + manga_id + "/feed" + "?translatedLanguage[]=" + target_language);
         if (response != null) {
             return MangaDexParser.GetMangaChapters(response);
-
 
         }
         return null;

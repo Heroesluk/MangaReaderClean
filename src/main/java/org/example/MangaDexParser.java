@@ -13,8 +13,7 @@ public class MangaDexParser {
 
         JsonArray collection = data.get("data").getAsJsonArray();
         if (collection.size() == 0) {
-            System.out.println("No manga found");
-            return new ArrayList<MangaObject>();
+            return null;
 
         }
 
@@ -39,8 +38,7 @@ public class MangaDexParser {
 
         JsonArray collection = data.get("data").getAsJsonArray();
         if (collection.size() == 0) {
-            System.out.println("No chapters found");
-            return new ArrayList<MangaChapterObject>();
+            return null;
         }
 
         for (int i = 0; i < collection.size(); i++) {
