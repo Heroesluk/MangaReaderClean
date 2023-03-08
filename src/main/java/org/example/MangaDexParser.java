@@ -49,6 +49,19 @@ public class MangaDexParser {
         return chapters;
     }
 
+    public static ArrayList<MangaChapterObject> FilterChapters(ArrayList<MangaChapterObject> chapters, String target_language){
+        ArrayList<MangaChapterObject> chapters_filtered = new ArrayList<MangaChapterObject>();
+
+        for(MangaChapterObject chapter: chapters){
+            if(chapter.translatedLanguage.equals(target_language)){
+                chapters_filtered.add(chapter);
+
+            }
+        }
+
+        return chapters_filtered;
+    }
+
 
     private static MangaObject JsonToManga(JsonObject manga_data) {
         JsonObject attributes = manga_data.get("attributes").getAsJsonObject();
@@ -105,7 +118,12 @@ public class MangaDexParser {
         for (MangaObject res : results) {
             System.out.println(res.toString());
         }
+    }
 
+    public static void PrintChapters(ArrayList<MangaChapterObject> results) {
+        for (MangaChapterObject res : results) {
+            System.out.println(res.toString());
+        }
     }
 
 }
@@ -147,4 +165,13 @@ class MangaChapterObject {
 
     }
 
+    @Override
+    public String toString() {
+        return "MangaChapterObject{" +
+                "id='" + id + '\'' +
+                ", chapter_number=" + chapter_number +
+                ", translatedLanguage='" + translatedLanguage + '\'' +
+                ", pages=" + pages +
+                '}';
+    }
 }

@@ -38,4 +38,10 @@ public class MangaDexParserTest extends TestCase {
 
     }
 
+    public  void testFetchingChapters(){
+        JsonObject response = Handler_HTTP.httpGetRequest("https://api.mangadex.org/manga/f98660a1-d2e2-461c-960d-7bd13df8b76d/feed");
+        ArrayList<MangaChapterObject> chapters = MangaDexParser.GetMangaChapters(response);
+        assertEquals(chapters.size(),20);
+    }
+
 }

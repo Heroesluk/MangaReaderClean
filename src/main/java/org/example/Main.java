@@ -14,8 +14,8 @@ public class Main {
 
 
         UserLogic usrLogic = new UserLogic();
-        usrLogic.SearchForManga("Kaoru hana wa rin to");
-        usrLogic.RetrieveMangaChapters("418791c0-35cf-4f87-936b-acd9cddf0989");
+        //usrLogic.SearchForManga("Kaoru hana wa rin to");
+        usrLogic.RetrieveMangaChapters("418791c0-35cf-4f87-936b-acd9cddf0989","en");
 
 
 
