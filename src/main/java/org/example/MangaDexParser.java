@@ -24,9 +24,18 @@ public class MangaDexParser {
         JsonObject attributes = manga_data.get("attributes").getAsJsonObject();
         JsonArray relationships = manga_data.get("relationships").getAsJsonArray();
 
-        String cover_file_name = relationships.get(2).getAsJsonObject().get("attributes").getAsJsonObject().get("fileName").toString();
-        String id = manga_data.get("id").toString();
-        String title = attributes.get("title").toString();
+        String cover_file_name = relationships.get(2).getAsJsonObject().get("attributes").getAsJsonObject().get("fileName").getAsString();
+        String id = manga_data.get("id").getAsString();
+        String title = "";
+
+        JsonObject title_obj = attributes.get("title").getAsJsonObject();
+        if (title_obj.has("en")) {
+            title = title_obj.get("en").getAsString();
+        } else if (title_obj.has("jp-ro")) {
+            title = title_obj.get("ja-ro").getAsString();
+        } else if (title_obj.has("ja")) {
+            title = title_obj.get("ja").getAsString();
+        }
 
         if(cover_file_name.length()==0){
             throw new IllegalArgumentException("Cover file not found");
