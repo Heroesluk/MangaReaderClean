@@ -10,6 +10,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
@@ -20,10 +21,12 @@ public class Main {
 //                .GET()
 //                .build();
 
-        JsonObject response = Handler_HTTP.httpGetRequest("https://api.mangadex.org/manga?title=Kaoru+hana");
+        JsonObject response = Handler_HTTP.httpGetRequest("https://api.mangadex.org/manga?includes[]=cover_art&title=Kaoru+hana+wa");
 
         MangaDexParser parser = new MangaDexParser();
-        parser.ParseSearchResults(response);
+        ArrayList<MangaObject> results = parser.ParseSearchResults(response);
+
+        MangaDexParser.PrintSearchResults(results);
 
 
     }
@@ -31,6 +34,11 @@ public class Main {
 };
 
 class Handler_HTTP{
+    final static String base_url = "https://api.mangadex.org/";
+    final static String base_data_url = "https://uploads.mangadex.org/";
+
+
+
     public static JsonObject httpGetRequest(String request_link) throws URISyntaxException, IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
