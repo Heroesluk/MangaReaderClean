@@ -10,6 +10,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
+
+//todo:
+//More tests, negative tests
+//Download chapter, think about how path to the chapter should be defined
+//Basic application:
+    //Search: display results -> click result= Move scene to manga showcase -> click chapter = download chapter and open reader
+
 public class Main {
     public static void main(String[] args)  {
 
