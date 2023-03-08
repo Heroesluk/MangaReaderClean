@@ -4,24 +4,20 @@ package org.example;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Main {
-    public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
-        System.out.println("Hello world!");
+    public static void main(String[] args)  {
 
-//        HttpRequest request = HttpRequest.newBuilder()
-//                .uri(URI.create("https://postman-echo.com/get"))
-//                .GET()
-//                .build();
 
         UserLogic usrLogic = new UserLogic();
-        usrLogic.SearchForManga("Kaoru+hana");
+        usrLogic.SearchForManga("Kaoru hana");
+        usrLogic.SearchForManga("Boku no");
+
+
 
 
 
@@ -34,7 +30,7 @@ class Handler_HTTP{
     final static String base_data_url = "https://uploads.mangadex.org/";
 
 
-    public static JsonObject httpGetRequest(String request_link) throws IOException, InterruptedException {
+    public static JsonObject httpGetRequest(String request_link) {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()

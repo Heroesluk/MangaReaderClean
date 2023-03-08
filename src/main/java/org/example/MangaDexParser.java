@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class MangaDexParser {
 
-    public ArrayList<MangaObject> ParseSearchResults(JsonObject data) {
+    public static ArrayList<MangaObject> ParseSearchResults(JsonObject data) {
         ArrayList<MangaObject> temp = new ArrayList<MangaObject>();
 
         JsonArray collection = data.get("data").getAsJsonArray();
@@ -34,7 +34,7 @@ public class MangaDexParser {
         return temp;
     }
 
-    private MangaObject JsonToManga(JsonObject manga_data) {
+    private static MangaObject JsonToManga(JsonObject manga_data) {
         JsonObject attributes = manga_data.get("attributes").getAsJsonObject();
         JsonArray relationships = manga_data.get("relationships").getAsJsonArray();
 
