@@ -23,8 +23,7 @@ public class Main {
 
         JsonObject response = Handler_HTTP.httpGetRequest("https://api.mangadex.org/manga?includes[]=cover_art&title=Kaoru+hana+wa");
 
-        MangaDexParser parser = new MangaDexParser();
-        ArrayList<MangaObject> results = parser.ParseSearchResults(response);
+        ArrayList<MangaObject> results = MangaDexParser.ParseSearchResults(response);
 
         MangaDexParser.PrintSearchResults(results);
 

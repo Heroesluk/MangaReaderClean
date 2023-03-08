@@ -7,10 +7,15 @@ import java.util.ArrayList;
 
 public class MangaDexParser {
 
-    public ArrayList<MangaObject> ParseSearchResults(JsonObject data) {
+    public static ArrayList<MangaObject> ParseSearchResults(JsonObject data) {
         ArrayList<MangaObject> temp = new ArrayList<MangaObject>();
 
         JsonArray collection = data.get("data").getAsJsonArray();
+        if(collection.size()==0){
+            System.out.println("No manga found");
+            return new ArrayList<MangaObject>();
+
+        }
 
         for (int i = 0; i < collection.size(); i++) {
             temp.add(JsonToManga(collection.get(i).getAsJsonObject()));
@@ -20,7 +25,7 @@ public class MangaDexParser {
         return temp;
     }
 
-    private MangaObject JsonToManga(JsonObject manga_data) {
+    private static MangaObject JsonToManga(JsonObject manga_data) {
         JsonObject attributes = manga_data.get("attributes").getAsJsonObject();
         JsonArray relationships = manga_data.get("relationships").getAsJsonArray();
 
