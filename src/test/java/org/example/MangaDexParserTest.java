@@ -9,8 +9,8 @@ import java.util.ArrayList;
 
 public class MangaDexParserTest extends TestCase {
     JsonObject response = Handler_HTTP.httpGetRequest("https://api.mangadex.org/manga?includes[]=cover_art&title=Kaoru+hana+wa");
-
-    ArrayList<MangaObject> results = MangaDexParser.ParseSearchResults(response);
+    MangaDexParser parser = new MangaDexParser();
+    ArrayList<MangaObject> results = parser.ParseSearchResults(response);
 
 
     MangaObject kaoru_hana = results.get(0);
@@ -35,7 +35,7 @@ public class MangaDexParserTest extends TestCase {
 
     public void testSubsequentSearch() throws URISyntaxException, IOException, InterruptedException {
         JsonObject response = Handler_HTTP.httpGetRequest("https://api.mangadex.org/manga?includes[]=cover_art&title=Jojo");
-        ArrayList<MangaObject> results = MangaDexParser.ParseSearchResults(response);
+        ArrayList<MangaObject> results = parser.ParseSearchResults(response);
         assertEquals(results.size(),10);
 
     }

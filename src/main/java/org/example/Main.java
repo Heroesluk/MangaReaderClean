@@ -10,7 +10,6 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
@@ -21,11 +20,9 @@ public class Main {
 //                .GET()
 //                .build();
 
-        JsonObject response = Handler_HTTP.httpGetRequest("https://api.mangadex.org/manga?includes[]=cover_art&title=Kaoru+hana+wa");
+        UserLogic usrLogic = new UserLogic();
+        usrLogic.SearchForManga("Kaoru+hana");
 
-        ArrayList<MangaObject> results = MangaDexParser.ParseSearchResults(response);
-
-        MangaDexParser.PrintSearchResults(results);
 
 
     }
@@ -37,26 +34,33 @@ class Handler_HTTP{
     final static String base_data_url = "https://uploads.mangadex.org/";
 
 
+    public static JsonObject httpGetRequest(String request_link) throws IOException, InterruptedException {
+        try {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .version(HttpClient.Version.HTTP_2)
+                    .uri(URI.create(request_link))
+                    .headers("Accept-Enconding", "gzip, deflate")
+                    .build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-    public static JsonObject httpGetRequest(String request_link) throws URISyntaxException, IOException, InterruptedException {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .version(HttpClient.Version.HTTP_2)
-                .uri(URI.create(request_link))
-                .headers("Accept-Enconding", "gzip, deflate")
-                .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            String responseBody = response.body();
+            int responseStatusCode = response.statusCode();
 
-        String responseBody = response.body();
-        int responseStatusCode = response.statusCode();
-
-        System.out.println("httpGetRequest: " + request_link);
-        System.out.println("httpGetRequest: " + responseBody);
-        System.out.println("httpGetRequest status code: " + responseStatusCode);
+            System.out.println("httpGetRequest: " + request_link);
+            System.out.println("httpGetRequest: " + responseBody);
+            System.out.println("httpGetRequest status code: " + responseStatusCode);
 
 
-        return JsonParser.parseString(responseBody).getAsJsonObject();
+            return JsonParser.parseString(responseBody).getAsJsonObject();
+
+        } catch (Exception e) {
+            System.out.println("Error occured during the request");
+            return null;
+        }
+
     }
+
 
 }
 

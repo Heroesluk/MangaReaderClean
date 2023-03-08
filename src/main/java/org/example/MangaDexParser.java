@@ -1,13 +1,14 @@
 package org.example;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
 public class MangaDexParser {
 
-    public static ArrayList<MangaObject> ParseSearchResults(JsonObject data) {
+    public ArrayList<MangaObject> ParseSearchResults(JsonObject data) {
         ArrayList<MangaObject> temp = new ArrayList<MangaObject>();
 
         JsonArray collection = data.get("data").getAsJsonArray();
@@ -18,21 +19,40 @@ public class MangaDexParser {
         }
 
         for (int i = 0; i < collection.size(); i++) {
-            temp.add(JsonToManga(collection.get(i).getAsJsonObject()));
+            try{
+                temp.add(JsonToManga(collection.get(i).getAsJsonObject()));
+
+            }
+            catch (Exception e){
+                System.out.println("Huj");
+
+                System.out.println(collection.get(i));
+            }
 
         }
 
         return temp;
     }
 
-    private static MangaObject JsonToManga(JsonObject manga_data) {
+    private MangaObject JsonToManga(JsonObject manga_data) {
         JsonObject attributes = manga_data.get("attributes").getAsJsonObject();
         JsonArray relationships = manga_data.get("relationships").getAsJsonArray();
 
-        String cover_file_name = relationships.get(2).getAsJsonObject().get("attributes").getAsJsonObject().get("fileName").getAsString();
         String id = manga_data.get("id").getAsString();
-        String title = "";
 
+        String cover_file_name="";
+
+        for(JsonElement relation: relationships){
+            if(relation.getAsJsonObject().get("type").getAsString().equals("cover_art")){
+                cover_file_name =
+                        relation.getAsJsonObject().get("attributes").getAsJsonObject()
+                                .get("fileName").getAsString();
+
+            }
+        }
+
+
+        String title = "";
         JsonObject title_obj = attributes.get("title").getAsJsonObject();
         if (title_obj.has("en")) {
             title = title_obj.get("en").getAsString();
