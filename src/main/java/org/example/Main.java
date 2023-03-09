@@ -32,11 +32,17 @@ public class Main {
         usrLogic.print_out("M");
 
 
+
         MangaChapterObject chapter  = usrLogic.get_chapter(5);
+
         chapter.AddChapterData(usrLogic.fetch_chapter_data(chapter.id));
+        Handler_HTTP.Download_Chapter(chapter);
+
+
+
         System.out.println(chapter.toString());
 
-        Handler_HTTP.Download_images("https://uploads.mangadex.org/data/e0cad38feab0cbb167a3ac1f19dbf3a7/1-500a9595a31a6d1fa73e727d823e80d87cc7057f18bee2ebaec305bca3529279.png");
+        Handler_HTTP.Download_image("https://uploads.mangadex.org/data/e0cad38feab0cbb167a3ac1f19dbf3a7/1-500a9595a31a6d1fa73e727d823e80d87cc7057f18bee2ebaec305bca3529279.png","Kaoru_hana1.png");
 
 
 
@@ -121,23 +127,32 @@ class Handler_HTTP{
 
     String linkk  = "https://uploads.mangadex.org/data/e0cad38feab0cbb167a3ac1f19dbf3a7/1-500a9595a31a6d1fa73e727d823e80d87cc7057f18bee2ebaec305bca3529279.png";
 
-    public static void Download_images(String link) throws IOException, InterruptedException {
+    public static void Download_image(String link, String file_name) throws IOException, InterruptedException {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .version(HttpClient.Version.HTTP_2)
                 .uri(URI.create(link))
                 .headers("Accept-Enconding", "gzip, deflate")
                 .build();
-        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+        HttpResponse<InputStream> response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
 
-        InputStream is = (InputStream) response.body();
-        String filePath = "sample.png";
-        FileOutputStream fos = new FileOutputStream(new File(filePath));
+        InputStream is = response.body();
+        FileOutputStream fos = new FileOutputStream(new File(file_name));
         int inByte;
         while((inByte = is.read()) != -1)
             fos.write(inByte);
         is.close();
         fos.close();
+    }
+
+    public static void Download_Chapter(MangaChapterObject chapter) throws IOException, InterruptedException {
+        String link_base = chapter.data.baseUrl + "/data/" + chapter.data.hash + "/";
+
+
+        for(String link: chapter.data.img_links){
+            Download_image(link_base +link,link);
+        }
+
     }
 
 }
