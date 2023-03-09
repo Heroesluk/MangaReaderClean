@@ -6,6 +6,10 @@ public class MangaChapterObject {
     final String translatedLanguage;
     final int pages;
 
+    ChapterData data = null;
+
+
+
     MangaChapterObject(String id, float chapter_number, String translatedLanguage, int pages) {
         this.id = id;
         this.chapter_number = chapter_number;
@@ -23,4 +27,9 @@ public class MangaChapterObject {
                 ", pages=" + pages +
                 '}';
     }
+
+    void AddChapterData(ChapterData data){
+        this.data = data;
+    }
+
 }

@@ -22,12 +22,10 @@ public class Main {
 
 
         UserLogic usrLogic = new UserLogic();
-        //usrLogic.searchForManga("Kaoru hana wa rin to");
-//        usrLogic.fetch_chapters("418791c0-3dasdsada5cf-4f87-936b-acd9cddf0989");
-//        usrLogic.print_out("M");
-//        usrLogic.print_out("C");
-        ChapterData test = Handler_HTTP.GetChapterData("a54c491c-8e4c-4e97-8873-5b79e59da210");
-        System.out.println(test.toString());
+        usrLogic.searchForManga("23io189o381290378109278309");
+        usrLogic.fetch_chapters("418791c0-3ddsadsadasdasasdsada5cf-4f87-936b-acd9cddf0989");
+        usrLogic.print_out("M");
+        usrLogic.print_out("C");
 
 
     }
@@ -89,13 +87,13 @@ class Handler_HTTP{
 
     }
 
-    public static ChapterData GetChapterData(String manga_id){
-        JsonObject response = Handler_HTTP.httpGetRequest("https://api.mangadex.org/at-home/server/" + manga_id);
+    public static ChapterData GetChapterData(String chapter_id){
+        JsonObject response = Handler_HTTP.httpGetRequest("https://api.mangadex.org/at-home/server/" + chapter_id);
         if (response != null) {
             return MangaDexParser.JsonToChapterData(response);
 
         }
-        System.out.println("https://api.mangadex.org/at-home/server/" + manga_id);
+        System.out.println("https://api.mangadex.org/at-home/server/" + chapter_id);
         return null;
 
 
