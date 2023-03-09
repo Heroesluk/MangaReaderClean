@@ -4,6 +4,10 @@ package org.example;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -19,7 +23,7 @@ import java.util.ArrayList;
     //Search: display results -> click result= Move scene to manga showcase -> click chapter = download chapter and open reader
 
 public class Main {
-    public static void main(String[] args)  {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
 
         UserLogic usrLogic = new UserLogic();
@@ -31,6 +35,8 @@ public class Main {
         MangaChapterObject chapter  = usrLogic.get_chapter(5);
         chapter.AddChapterData(usrLogic.fetch_chapter_data(chapter.id));
         System.out.println(chapter.toString());
+
+        Handler_HTTP.Download_images("https://uploads.mangadex.org/data/e0cad38feab0cbb167a3ac1f19dbf3a7/1-500a9595a31a6d1fa73e727d823e80d87cc7057f18bee2ebaec305bca3529279.png");
 
 
 
@@ -108,6 +114,31 @@ class Handler_HTTP{
     }
 
 
+    //4-e88037c3d89cb2f3f9fcc9967a7a59516bfc01f5854d5e68a7ac68cde390b245.jpg
+
+    //cec05b3eb895b9f5e467bb31abffbfb7
+    //https://uploads.mangadex.org
+
+    String linkk  = "https://uploads.mangadex.org/data/e0cad38feab0cbb167a3ac1f19dbf3a7/1-500a9595a31a6d1fa73e727d823e80d87cc7057f18bee2ebaec305bca3529279.png";
+
+    public static void Download_images(String link) throws IOException, InterruptedException {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .uri(URI.create(link))
+                .headers("Accept-Enconding", "gzip, deflate")
+                .build();
+        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofInputStream());
+
+        InputStream is = (InputStream) response.body();
+        String filePath = "sample.png";
+        FileOutputStream fos = new FileOutputStream(new File(filePath));
+        int inByte;
+        while((inByte = is.read()) != -1)
+            fos.write(inByte);
+        is.close();
+        fos.close();
+    }
 
 }
 
