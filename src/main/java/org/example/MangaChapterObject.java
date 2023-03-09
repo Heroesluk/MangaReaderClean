@@ -18,18 +18,28 @@ public class MangaChapterObject {
 
     }
 
+    void AddChapterData(ChapterData data){
+        this.data = data;
+    }
+
     @Override
     public String toString() {
-        return "MangaChapterObject{" +
+        String str2;
+        String str = "MangaChapterObject{" +
                 "id='" + id + '\'' +
                 ", chapter_number=" + chapter_number +
                 ", translatedLanguage='" + translatedLanguage + '\'' +
                 ", pages=" + pages +
                 '}';
+
+        if (data != null) {
+            str2 = str + data.toString();
+            return str2;
+
+        }
+        return str;
     }
 
-    void AddChapterData(ChapterData data){
-        this.data = data;
-    }
+
 
 }

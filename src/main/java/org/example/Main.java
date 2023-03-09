@@ -10,6 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 
+//418791c0-35cf-4f87-936b-acd9cddf0989 kaoru hana
 
 //todo:
 //More tests, negative tests
@@ -23,9 +24,14 @@ public class Main {
 
         UserLogic usrLogic = new UserLogic();
         usrLogic.searchForManga("Kaoru Hana wa");
-       //usrLogic.fetch_chapters("418791c0-3ddsadsadasdasasdsada5cf-4f87-936b-acd9cddf0989");
+        usrLogic.fetch_chapters("418791c0-35cf-4f87-936b-acd9cddf0989");
         usrLogic.print_out("M");
-        usrLogic.print_out("C");
+
+
+        MangaChapterObject chapter  = usrLogic.get_chapter(5);
+        chapter.AddChapterData(usrLogic.fetch_chapter_data(chapter.id));
+        System.out.println(chapter.toString());
+
 
 
 

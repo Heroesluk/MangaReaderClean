@@ -19,6 +19,18 @@ public class UserLogic {
     }
 
 
+    MangaChapterObject get_chapter(float chapter_number){
+        if(chapterList.size()> (int) chapter_number){
+            for(MangaChapterObject chapter: chapterList){
+                if(chapter.chapter_number==chapter_number){
+                    return chapter;
+                }
+            }
+        }
+        return null;
+    }
+
+
     void print_out(String type) {
         if(type.equals("C")){
             PrintGeneric(chapterList);
