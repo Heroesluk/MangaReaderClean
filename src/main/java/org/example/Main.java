@@ -22,10 +22,11 @@ public class Main {
 
 
         UserLogic usrLogic = new UserLogic();
-        usrLogic.searchForManga("23io189o381290378109278309");
-        usrLogic.fetch_chapters("418791c0-3ddsadsadasdasasdsada5cf-4f87-936b-acd9cddf0989");
+        usrLogic.searchForManga("Kaoru Hana wa");
+       //usrLogic.fetch_chapters("418791c0-3ddsadsadasdasasdsada5cf-4f87-936b-acd9cddf0989");
         usrLogic.print_out("M");
         usrLogic.print_out("C");
+
 
 
     }
@@ -73,17 +74,18 @@ class Handler_HTTP{
         if (response != null) {
             return MangaDexParser.ParseSearchResults(response);
         }
-        return null;
+        return new ArrayList<MangaObject>();
 
     }
 
     public static ArrayList<MangaChapterObject> RetrieveMangaChapters(String manga_id, String target_language) {
         JsonObject response = Handler_HTTP.httpGetRequest("https://api.mangadex.org/manga/" + manga_id + "/feed" + "?translatedLanguage[]=" + target_language);
+
         if (response != null) {
             return MangaDexParser.GetMangaChapters(response);
 
         }
-        return null;
+        return new ArrayList<MangaChapterObject>();
 
     }
 

@@ -13,7 +13,7 @@ public class MangaDexParser {
 
         JsonArray collection = data.get("data").getAsJsonArray();
         if (collection.size() == 0) {
-            return null;
+            return temp;
 
         }
 
@@ -38,7 +38,7 @@ public class MangaDexParser {
 
         JsonArray collection = data.get("data").getAsJsonArray();
         if (collection.size() == 0) {
-            return null;
+            return chapters;
         }
 
         for (int i = 0; i < collection.size(); i++) {
@@ -117,17 +117,6 @@ public class MangaDexParser {
     }
 
 
-    public static void PrintSearchResults(ArrayList<MangaObject> results) {
-        for (MangaObject res : results) {
-            System.out.println(res.toString());
-        }
-    }
-
-    public static void PrintChapters(ArrayList<MangaChapterObject> results) {
-        for (MangaChapterObject res : results) {
-            System.out.println(res.toString());
-        }
-    }
 
 
 }
